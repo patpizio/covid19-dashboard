@@ -16,7 +16,7 @@ cumul = prepare_data()
 available_vars = cumul['show'].unique()
 
 app.layout = html.Div([
-    html.H1(
+    html.H2(
         'The numbers of Covid-19',
         style={
             'textAlign': 'center',
@@ -30,6 +30,13 @@ app.layout = html.Div([
         value='cases'
     ),
 
+    dcc.RadioItems(
+        id='yaxis-scale',
+        options=[{'label': i, 'value': i} for i in ['Linear', 'Log']],
+        value='Linear',
+        labelStyle={'display': 'inline-block'}
+    ),
+
     dcc.Graph(
         id='cumul-trends'
     ),
@@ -41,11 +48,13 @@ app.layout = html.Div([
 @app.callback(
     Output('cumul-trends', 'figure'),
     [Input('input-min_cases', 'value'),
-     Input('show-variable', 'value')])
-def update_alignment(min_cases, chosen_var):
+     Input('show-variable', 'value'),
+     Input('yaxis-scale', 'value')])
+def update_alignment(min_cases, chosen_var, scale):
     cumul_aligned = cumul[cumul['value'] > min_cases]
-    fig = px.line(cumul_aligned[cumul_aligned['show'] == chosen_var], y='value', color='countriesAndTerritories', log_y=False)
-    fig.update_layout(title='Cases', xaxis_title='Days from ' + str(min_cases) + 'th case')
+    log_y = False if scale == 'Linear' else True
+    fig = px.line(cumul_aligned[cumul_aligned['show'] == chosen_var], y='value', color='countriesAndTerritories', log_y=log_y)
+    fig.update_layout(xaxis_title='Days from ' + str(min_cases) + 'th case')
     return fig
 
 
