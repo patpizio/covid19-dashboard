@@ -1,15 +1,18 @@
+import pandas as pd
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import pandas as pd
-from data_preparation import get_cumul_plot
+from dash.dependencies import Input, Output
+import plotly.express as px
+from data_etl import prepare_data
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-fig = get_cumul_plot()
 
+min_cases = 60
+cumul = prepare_data()
 
 app.layout = html.Div([
     html.H1(
@@ -21,10 +24,22 @@ app.layout = html.Div([
     ),
 
     dcc.Graph(
-        id='cumul-trends',
-        figure=fig
-    )
+        id='cumul-trends'
+    ),
+
+    dcc.Input(id='input-min_cases', value=min_cases, type='number')
 ])
+
+
+@app.callback(
+    Output('cumul-trends', 'figure'),
+    [Input('input-min_cases', 'value')])
+def update_alignment(min_cases):
+    cumul_aligned = cumul[cumul['value'] > min_cases]
+    fig = px.line(cumul_aligned[cumul_aligned['show'] == 'deaths'], y='value', color='countriesAndTerritories', log_y=False)
+    fig.update_layout(title='Cases', xaxis_title='Days from ' + str(min_cases) + 'th case')
+    return fig
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
