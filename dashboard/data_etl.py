@@ -9,10 +9,10 @@ def prepare_data():
 	filename = today + '.csv'
 	filepath = '../data/' + filename
 
-	r = requests.get(url, auth=HttpNtlmAuth(':',':'))
+	# r = requests.get(url, auth=HttpNtlmAuth(':',':'))
 
-	with open(filepath, 'wb') as file:
-	    file.write(r.content)
+	# with open(filepath, 'wb') as file:
+	#     file.write(r.content)
 
 	data = pd.read_csv(filepath, encoding='cp1252')
 	data['dateRep'] = pd.to_datetime(data['dateRep'], format='%d/%m/%Y')
