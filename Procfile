@@ -1,1 +1,1 @@
-python dashboard/app.py
+python app.py
