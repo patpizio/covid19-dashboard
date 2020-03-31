@@ -13,7 +13,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 
-min_cases = 60
+min_cases = 100
 cumul = prepare_data()
 data_upto = cumul['dateRep'].max().date().strftime('%d %B, %Y')
 available_vars = cumul['show'].unique()
