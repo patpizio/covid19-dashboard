@@ -1,12 +1,11 @@
 import requests, csv
 import pandas as pd
-from datetime import date
 from requests_ntlm import HttpNtlmAuth
 
 def prepare_data():
-	today = date.today().strftime('%Y-%m-%d')
+
 	url = 'https://opendata.ecdc.europa.eu/covid19/casedistribution/csv'
-	filename = today + '.csv'
+	filename = 'latest.csv'
 	filepath = './data/' + filename
 
 	# r = requests.get(url, auth=HttpNtlmAuth(':',':'))

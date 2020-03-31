@@ -5,6 +5,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.express as px
 from data_etl import prepare_data
+from datetime import datetime
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -14,6 +15,7 @@ server = app.server
 
 min_cases = 60
 cumul = prepare_data()
+data_upto = cumul['dateRep'].max().date().strftime('%d %B, %Y')
 available_vars = cumul['show'].unique()
 
 app.layout = html.Div([
@@ -24,6 +26,7 @@ app.layout = html.Div([
             # 'color': colors['text']
         }
     ),
+    html.H5('Updated to ' + data_upto, style={'textAlign': 'center'}),
 
     dcc.Dropdown(
         id='show-variable',
