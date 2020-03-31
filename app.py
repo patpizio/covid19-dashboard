@@ -21,17 +21,17 @@ available_vars = cumul['show'].unique()
 app.layout = html.Div([
     html.H2(
         'The numbers of Covid-19',
-        style={
-            'textAlign': 'center',
-            # 'color': colors['text']
-        }
+        style={'textAlign': 'center'}
     ),
-    html.H5('Updated to ' + data_upto, style={'textAlign': 'center'}),
+
+    html.H5('Updated to ' + data_upto, style={'textAlign': 'center'}
+    ),
 
     dcc.Dropdown(
         id='show-variable',
         options=[{'label': i, 'value': i} for i in available_vars],
-        value='cases'
+        value='cases',
+        style={'width':'30%'}
     ),
 
     dcc.RadioItems(
