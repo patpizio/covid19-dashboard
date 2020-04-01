@@ -14,6 +14,7 @@ def prepare_data():
 	data['dateRep'] = pd.to_datetime(data['dateRep'], format='%d/%m/%Y')
 	latest_date = max(data['dateRep'])
 
+	# check for updates
 	if (latest_date < today):
 		r = requests.get(url, auth=HttpNtlmAuth(':',':'))
 		with open(filepath, 'wb') as file:
@@ -21,8 +22,6 @@ def prepare_data():
 		data = pd.read_csv(filepath)
 		data['dateRep'] = pd.to_datetime(data['dateRep'], format='%d/%m/%Y')
 
-	data = pd.read_csv(filepath, encoding='cp1252')
-	data['dateRep'] = pd.to_datetime(data['dateRep'], format='%d/%m/%Y')
 
 	df = data.loc[data['countryterritoryCode'].isin(['ITA', 'ESP', 'GBR', 'CHN', 'USA', 'DEU', 'KOR', 'FRA', 'SWE']), :]
 
@@ -34,7 +33,3 @@ def prepare_data():
 	cumul = cumul.rename(columns={None:'show'})
 
 	return cumul
-
-
-
-
