@@ -1,17 +1,25 @@
 import requests, csv
 import pandas as pd
 from requests_ntlm import HttpNtlmAuth
+from datetime import datetime, date
 
 def prepare_data():
 
 	url = 'https://opendata.ecdc.europa.eu/covid19/casedistribution/csv'
 	filename = 'latest.csv'
 	filepath = './data/' + filename
+	today = date.today()
 
-	# r = requests.get(url, auth=HttpNtlmAuth(':',':'))
+	data = pd.read_csv(filepath)
+	data['dateRep'] = pd.to_datetime(data['dateRep'], format='%d/%m/%Y')
+	latest_date = max(data['dateRep'])
 
-	# with open(filepath, 'wb') as file:
-	#     file.write(r.content)
+	if (latest_date < today):
+    	r = requests.get(url, auth=HttpNtlmAuth(':',':'))
+    	with open(filepath, 'wb') as file:
+        	file.write(r.content)
+    	data = pd.read_csv(filepath)
+    	data['dateRep'] = pd.to_datetime(data['dateRep'], format='%d/%m/%Y')
 
 	data = pd.read_csv(filepath, encoding='cp1252')
 	data['dateRep'] = pd.to_datetime(data['dateRep'], format='%d/%m/%Y')
