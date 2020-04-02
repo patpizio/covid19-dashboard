@@ -10,7 +10,7 @@ def prepare_data():
 	filepath = './data/' + filename
 	today = date.today()
 
-	data = pd.read_csv(filepath)
+	data = pd.read_csv(filepath, error_bad_lines=False)
 	data['dateRep'] = pd.to_datetime(data['dateRep'], format='%d/%m/%Y')
 	latest_date = max(data['dateRep'])
 
@@ -19,7 +19,7 @@ def prepare_data():
 		r = requests.get(url, auth=HttpNtlmAuth(':',':'))
 		with open(filepath, 'wb') as file:
 			file.write(r.content)
-		data = pd.read_csv(filepath)
+		data = pd.read_csv(filepath, error_bad_lines=False)
 		data['dateRep'] = pd.to_datetime(data['dateRep'], format='%d/%m/%Y')
 
 
