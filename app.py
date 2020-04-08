@@ -58,7 +58,7 @@ def update_alignment(min_cases, chosen_var, scale):
     cumul_aligned = cumul[cumul['value'] > min_cases]
     log_y = False if scale == 'Linear' else True
     fig = px.line(cumul_aligned[cumul_aligned['show'] == chosen_var], y='value', color='countriesAndTerritories', log_y=log_y)
-    fig.update_layout(xaxis_title='Days from ' + str(min_cases) + 'th case')
+    fig.update_layout(xaxis_title='Days from ' + str(min_cases) + 'th case', uirevision=True)
     return fig
 
 
